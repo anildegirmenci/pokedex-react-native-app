@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, TextInput, Image, ActivityIndicator, ScrollView, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import {
-    Avatar,
-    Button,
-    Card,
-    Title,
-    Paragraph,
-    List,
-    Headline,
-} from 'react-native-paper';
 
 const ListPokemons = (props) => {
 
@@ -50,9 +41,9 @@ const ListPokemons = (props) => {
                                     style={styles.card}
                                     onPress={() =>
                                         props.navigation.navigate('Pokedex', {
-                                            pokemon: pokemon.name,
+                                          pokemon: pokemon.name,
                                         })
-                                    }>
+                                      }>
                                     <Image
                                         style={{ width: 150, height: 150 }}
                                         source={{

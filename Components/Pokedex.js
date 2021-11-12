@@ -6,16 +6,15 @@ const Pokedex = props => {
 
     const [details, setDetails] = useState([]);
 
-    useEffect(() => {
-        fetchPokemonDetails();
-    }, []);
-
-    const fetchPokemonDetails = () => {
+    const getPokemonData = async () => {
         const { state } = props.navigation;
         fetch(`https://pokeapi.co/api/v2/pokemon/${state.params.pokemon}`)
-            .then(res => res.json())
+            .then(response => response.json())
             .then(details => setDetails(details));
     }
+    useEffect(() => {
+        getPokemonData();
+    }, []);
 
     return details.name ? (
         <View style={{ flex: 1, alignItems: 'center' }}>

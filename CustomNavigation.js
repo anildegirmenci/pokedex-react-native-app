@@ -6,11 +6,11 @@ import ListPokemons from "./Components/ListPokemons";
 
 const Stack = createStackNavigator();
 
-const FirstScreenNavigator = () => {
+const ListPokemonNavigator = () => {
   return (
     <Stack.Navigator>
        <Stack.Screen
-        name="List of Pokémons"
+        name="Gotta Catch `Em All!"
         component={ListPokemons}
       />
        <Stack.Screen
@@ -21,4 +21,4 @@ const FirstScreenNavigator = () => {
   );
 }
 
-export {FirstScreenNavigator};
+export {ListPokemonNavigator};

@@ -14,7 +14,7 @@ import {
     DarkTheme as PaperDarkTheme,
 } from 'react-native-paper';
 import { useSelector } from "react-redux";
-import { FirstScreenNavigator } from './CustomNavigation';
+import {ListPokemonNavigator} from './CustomNavigation';
 
 
 export default () => {
@@ -28,8 +28,7 @@ export default () => {
                 <Tab.Navigator screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
                         let iconName;
-
-                        if (route.name === 'Home') {
+                        if (route.name === 'List of Pokémons') {
                             iconName = focused ? 'home' : 'home-outline';
                         } else if (route.name === 'Settings') {
                             iconName = focused ? 'theme-light-dark' : 'theme-light-dark';
@@ -46,7 +45,7 @@ export default () => {
                         );
                     },
                 })} >
-                    <Tab.Screen name="Home" component={FirstScreenNavigator} />
+                    <Tab.Screen name="List of Pokémons" component={ListPokemonNavigator} />
                     <Tab.Screen name="Inventory" component={Inventory} />
                     <Tab.Screen name="Settings" component={Settings} />
                 </Tab.Navigator>
