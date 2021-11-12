@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useDispatch,useSelector } from "react-redux";
+import * as catchAction from '../redux/actions/catch.action';
 
-const Pokedex = props => {
+const Pokedex = ({route}) => {
 
+    const dispatch = useDispatch();
     const [details, setDetails] = useState([]);
-
-    const getPokemonData = async () => {
-        const { state } = props.navigation;
-        fetch(`https://pokeapi.co/api/v2/pokemon/${state.params.pokemon}`)
-            .then(response => response.json())
-            .then(details => setDetails(details));
-    }
+    
     useEffect(() => {
         getPokemonData();
     }, []);
+
+    const getPokemonData = async () => {
+        fetch(`https://pokeapi.co/api/v2/pokemon/${route.params.pokemon}`)
+            .then(res => res.json())
+            .then(details => setDetails(details));
+    }
+
+    const pokemonInfo = {
+        imageUri : `https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/${details.name}.png`,
+        name: details.name
+    }
 
     return details.name ? (
         <View style={{ flex: 1, alignItems: 'center' }}>
@@ -32,7 +40,7 @@ const Pokedex = props => {
             <Text style={styles.text}>Type: {details.types[0].type.name}</Text>
             <TouchableOpacity activeOpacity={0.5} style={styles.catchButton}
                 onPress={() =>
-                    console.log('Gotta Catch `Em All!')
+                    dispatch(catchAction.Catch(pokemonInfo))
                 }
             >
                 <Text style={styles.catchText}>Catch the Pokémon!</Text>

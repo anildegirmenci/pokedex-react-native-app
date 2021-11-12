@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TextInput, Image, ActivityIndicator, ScrollView, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, TextInput, Image, ScrollView, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 
 const ListPokemons = (props) => {
 
@@ -8,6 +8,8 @@ const ListPokemons = (props) => {
     const [searchfeild, setSearchfeild] = useState('');
 
     const getPokemonData = async () => {
+        const { state } = props.route;
+        console.log(state);
         fetch('https://pokeapi.co/api/v2/pokemon?limit=100')
             .then(response => response.json())
             .then(pokemonData => setPokemonData(pokemonData.results));

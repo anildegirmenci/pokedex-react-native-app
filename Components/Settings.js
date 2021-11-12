@@ -14,7 +14,8 @@ export default  ({ navigation }) => {
             <List.Item
                 title="Dark Mode"
                 left={() => <List.Icon icon="brightness-4" />}
-                right={() => <Switch value={themeReducer.theme} onValueChange={(val)=>dispatch(themeActions.ToggleTheme(val))} />}
+                right={() => <Switch value={themeReducer.theme} 
+                onValueChange={(val)=>dispatch(themeActions.ToggleTheme(val))} />}
             />
         </View>
     )
