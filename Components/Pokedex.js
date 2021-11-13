@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, Image, StyleSheet, ActivityIndicator, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as catchAction from '../redux/actions/catch.action';
+import { capitalizeFirstLetter } from './methods/Upper';
+import { Card, Headline} from 'react-native-paper';
 
-const Pokedex = ({route}) => {
+const Pokedex = ({ route }) => {
 
     const dispatch = useDispatch();
     const [details, setDetails] = useState([]);
-    
+
     useEffect(() => {
         getPokemonData();
     }, []);
@@ -20,30 +22,30 @@ const Pokedex = ({route}) => {
     }
 
     const pokemonInfo = {
-        imageUri : `https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/${details.name}.png`,
+        imageUri: `https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/${details.name}.png`,
         name: details.name
     }
 
-    return details.name ? (
+    return pokemonInfo.name ? (
         <View style={{ flex: 1, alignItems: 'center' }}>
+            <Image style={styles.pokedexStyle} source={require('../assets/pokedex.png')} />
             <Image style={styles.image}
-                source={{
-                    uri: `https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/${details.name}.png`,
-                }}
+                source={{uri:`https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/${details.name}.png`}}
             />
-            <Text style={styles.text}>Name: {details.name}</Text>
-            <Text style={styles.text}>Height: {details.height}</Text>
-            <Text style={styles.text}>Weight: {details.weight}</Text>
-            <Text style={styles.text}>
-                Ability: {details.abilities[0].ability.name}
-            </Text>
-            <Text style={styles.text}>Type: {details.types[0].type.name}</Text>
+            <Image style={styles.pokemonPokeball} 
+                source={require('../assets/pokeball-2.png')} />
+            <Headline style={styles.headline}>Name: {capitalizeFirstLetter(pokemonInfo.name)}</Headline>
+            <Headline style={styles.headline}>Height: {details.height}</Headline>
+            <Headline style={styles.headline}>Weight: {details.weight}</Headline>
+            <Headline style={styles.headline}>Ability: {capitalizeFirstLetter(details.abilities[0].ability.name)}
+            </Headline>
+            <Headline style={styles.headline}>Type: {capitalizeFirstLetter(details.types[0].type.name)}</Headline>
             <TouchableOpacity activeOpacity={0.5} style={styles.catchButton}
                 onPress={() =>
                     dispatch(catchAction.Catch(pokemonInfo))
                 }
             >
-                <Text style={styles.catchText}>Catch the Pokémon!</Text>
+                <Headline style={styles.catchText}>Catch the Pokémon!</Headline>
             </TouchableOpacity>
         </View>
     ) : (
@@ -65,24 +67,50 @@ const styles = StyleSheet.create({
         fontSize: 22,
         marginBottom: 15,
     },
+    pokemonPokeball:{
+        position:'absolute', 
+        opacity:0.1,
+        top:250,
+        left:170, 
+        width:200,
+        height:200
+    },
+    pokedexStyle: {
+        width:700,
+        height:800,
+        position:'absolute',
+        top:-30,
+        left:-10,
+        opacity:0.5
+    },
     indicator: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },
-    catchButton: {
-        backgroundColor: 'red',
+    headline: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: 30,
+        fontSize: 18,
+        fontWeight: '600',
+        marginBottom:-1
+    },
+    catchButton: {
+        marginTop:20,
+        backgroundColor: 'rgb(223, 24, 24)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 40,
         width: 200,
         borderWidth: 1,
-        borderColor: '#000',
+        borderColor: '#333',
         textAlign: 'center',
-        borderRadius: 5,
+        borderRadius: 5,        
     },
     catchText: {
         color: '#eee',
+        fontSize: 14,
     }
 });
