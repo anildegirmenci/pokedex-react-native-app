@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
-import { Text } from 'react-native-paper';
+import { Text,Headline } from 'react-native-paper';
 import { View, StyleSheet, Image, Modal, Platform } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from "react-redux";
-import * as releaseAction from '../redux/actions/catch.action';
-import * as favAction from '../redux/actions/favorite.action';
+import * as  unfavoriteAction from '../redux/actions/favorite.action';
 import { capitalizeFirstLetter } from './methods/Upper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const Inventory = ({ route }) => {
+const Favorites = ({ route }) => {
 
     const dispatch = useDispatch();
     const [modalOpen, setModalOpen] = useState(false);
-    const catchReducer = useSelector(({ catchReducer }) => catchReducer);
+    const favoriteReducer = useSelector(({ favoriteReducer }) => favoriteReducer);
     
+
     return (
         <View>
-            <Image style={stylesInventory.blackPokeball} source={require('../assets/pokeball-black.png')} />
+            <Image style={stylesFavorites.blackPokeball} source={require('../assets/pokeball-black.png')} />
             <Modal visible={modalOpen} animationType='fade'>
-                <View style={stylesInventory.modalContent}>
-                    <Image style={stylesInventory.pikachu} source={require('../assets/pikachu.gif')} />
-                    <Text style={stylesInventory.modalText}>Fav Pokémon has been added!</Text>
-                    <MaterialCommunityIcons style={stylesInventory.modalToggle}
+                <View style={stylesFavorites.modalContent}>
+                    <Image style={stylesFavorites.pikachu} source={require('../assets/pikachu.gif')} />
+                    <Text>Fav Pokémon has been Deleted!</Text>
+                    <MaterialCommunityIcons style={stylesFavorites.modalToggle}
                         name='close'
                         size={40}
                         onPress={() => setModalOpen(false)}
@@ -30,29 +30,19 @@ const Inventory = ({ route }) => {
             </Modal>
             <ScrollView>
                 <View>
-                    <View style={stylesInventory.header}>
-                        <Image style={stylesInventory.pokedexStyle} source={require('../assets/pokebag.png')} />
-                        <Text style={stylesInventory.headerText}>Pokébag</Text>
+                    <View style={stylesFavorites.header}>
+                        <Image style={stylesFavorites.pokeStar} source={require('../assets/pokemon-fav.png')} />
+                        <Text style={stylesFavorites.headerText}>Favorite Pokémons</Text>
                     </View>
-                    {catchReducer.myPokemons.map((pokemon, index) => {
+                    {favoriteReducer.myPokemons.map((pokemon, index) => {
                         return <>
                             <View key={index}>
-                                <View style={stylesInventory.catchedContainer}>
-                                    <Text style={stylesInventory.catchedText}>Catched: {capitalizeFirstLetter(pokemon.name)}</Text>
-                                    <TouchableOpacity activeOpacity={0.5}
-                                        onPress={() => {
-                                            dispatch(releaseAction.Release(pokemon))
-                                        }}
-                                    >
-                                        <MaterialCommunityIcons style={stylesInventory.trash}
-                                            name='trash-can-outline'
-                                            size={35} />
-                                    </TouchableOpacity>
+                                <View style={stylesFavorites.catchedContainer}>
+                                    <Text style={stylesFavorites.catchedText}>{capitalizeFirstLetter(pokemon.name)}</Text>
                                     <TouchableOpacity activeOpacity={0.5} onPress={() => {
-                                        setModalOpen(true);
-                                        dispatch(favAction.Fav(pokemon));
-                                        }}>
-                                        <Image style={stylesInventory.favorite} source={require('../assets/pokemon-fav.png')} />
+                                        dispatch(unfavoriteAction.Unfav(pokemon));
+                                        setModalOpen(true)}}>
+                                        <Image style={stylesFavorites.favorite} source={require('../assets/pokemon-fav.png')} />
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -64,9 +54,9 @@ const Inventory = ({ route }) => {
         </View>
     )
 }
-export default Inventory;
+export default Favorites;
 
-const stylesInventory = StyleSheet.create({
+const stylesFavorites = StyleSheet.create({
     header: {
         flex: 1,
         flexDirection: 'row',
@@ -75,6 +65,7 @@ const stylesInventory = StyleSheet.create({
         paddingVertical: 20,
     },
     headerText: {
+        width:220,
         paddingLeft: 10,
         fontSize: 44,
     },
@@ -96,11 +87,11 @@ const stylesInventory = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    pokedexStyle: {
+    pokeStar: {
         width: 100,
         height: 100,
         top: 0,
-        left: 0,
+        left: -2,
         opacity: 1
     },
     blackPokeball: {
@@ -125,17 +116,10 @@ const stylesInventory = StyleSheet.create({
         height: 42,
     },
     modalContent: {
-        backgroundColor:'#e0e0e0',
         flex: 1,
-        width:'100%',
-        height:'100%',
         alignSelf: 'center',
         justifyContent: 'center',
         padding: 20,
-    },
-    modalText:{
-        fontSize:19,
-        color:'#333',
     },
     modalToggle: {
         marginVertical: 20,

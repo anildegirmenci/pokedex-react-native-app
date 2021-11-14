@@ -1,22 +1,22 @@
 import {
     FAVORITE_POKEMON, UNFAVORITE_POKEMON
 } from "../constant";
-export const FavPokemon = (pokeball) => ({
+export const favPokemon = (pokeball) => ({
     type: FAVORITE_POKEMON,
     pokemon: pokeball,
 });
-export const UnFavPokemon = (pokeball) => ({
+export const unfavPokemon = (pokeball) => ({
     type: UNFAVORITE_POKEMON,
     pokemon: pokeball,
 });
 
 export const Fav = (pokeball) => {
     return async (dispatch) => {
-        dispatch(FavPokemon(pokeball))
+        dispatch(favPokemon(pokeball))
     }
 }
 export const Unfav = (pokeball) => {
     return async (dispatch) => {
-        dispatch(UnFavPokemon(pokeball))
+        dispatch(unfavPokemon(pokeball))
     }
 }

@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import * as catchAction from '../redux/actions/catch.action';
 import { capitalizeFirstLetter } from './methods/Upper';
 import { Card, Headline } from 'react-native-paper';
-import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
 
 const Pokedex = ({ route }) => {
 
@@ -26,6 +24,7 @@ const Pokedex = ({ route }) => {
     const pokemonInfo = {
         imageUri: `https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/${details.name}.png`,
         name: details.name,
+        id: details.id
     }
 
     return pokemonInfo.name ? (
@@ -44,11 +43,8 @@ const Pokedex = ({ route }) => {
             <Headline style={styles.headline}>Type: {capitalizeFirstLetter(details.types[0].type.name)}</Headline>
             <TouchableOpacity activeOpacity={0.5} style={styles.catchButton}
                 onPress={() => {
-                    
-                    pokemonInfo.id = uuidv4();
                     dispatch(catchAction.Catch(pokemonInfo))
-                    
-                }
+                    }
                 }
             >
                 <Headline style={styles.catchText}>Catch the Pokémon!</Headline>

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Inventory from './Components/Inventory'
 import Settings from './Components/Settings';
+import Favorites from './Components/Favorites';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {
     NavigationContainer,
@@ -36,6 +37,9 @@ export default () => {
                         else if (route.name === 'Inventory') {
                             iconName = focused ? 'bag-personal' : 'bag-personal';
                         }
+                        else if (route.name === 'Favorites') {
+                            iconName = focused ? 'star' : 'star';
+                        }
                         return (
                             <MaterialCommunityIcons
                                 name={iconName}
@@ -47,6 +51,7 @@ export default () => {
                 })} >
                     <Tab.Screen name="List of Pokémons" component={ListPokemonNavigator} />
                     <Tab.Screen name="Inventory" component={Inventory} />
+                    <Tab.Screen name="Favorites" component={Favorites} />
                     <Tab.Screen name="Settings" component={Settings} />
                 </Tab.Navigator>
             </PaperProvider>
