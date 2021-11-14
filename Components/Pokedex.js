@@ -4,7 +4,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from "react-redux";
 import * as catchAction from '../redux/actions/catch.action';
 import { capitalizeFirstLetter } from './methods/Upper';
-import { Card, Headline} from 'react-native-paper';
+import { Card, Headline } from 'react-native-paper';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 const Pokedex = ({ route }) => {
 
@@ -16,23 +18,23 @@ const Pokedex = ({ route }) => {
     }, []);
 
     const getPokemonData = async () => {
-        fetch(`https://pokeapi.co/api/v2/pokemon/${route.params.pokemon}`)
+        fetch(`https://pokeapi.co/api/v2/pokemon/${route.params.pokemon.name}`)
             .then(res => res.json())
             .then(details => setDetails(details));
     }
-
+    // details i degistir 
     const pokemonInfo = {
         imageUri: `https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/${details.name}.png`,
-        name: details.name
+        name: details.name,
     }
 
     return pokemonInfo.name ? (
         <View style={{ flex: 1, alignItems: 'center' }}>
             <Image style={styles.pokedexStyle} source={require('../assets/pokedex.png')} />
             <Image style={styles.image}
-                source={{uri:`https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/${details.name}.png`}}
+                source={{ uri: `https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/${details.name}.png` }}
             />
-            <Image style={styles.pokemonPokeball} 
+            <Image style={styles.pokemonPokeball}
                 source={require('../assets/pokeball-2.png')} />
             <Headline style={styles.headline}>Name: {capitalizeFirstLetter(pokemonInfo.name)}</Headline>
             <Headline style={styles.headline}>Height: {details.height}</Headline>
@@ -41,8 +43,12 @@ const Pokedex = ({ route }) => {
             </Headline>
             <Headline style={styles.headline}>Type: {capitalizeFirstLetter(details.types[0].type.name)}</Headline>
             <TouchableOpacity activeOpacity={0.5} style={styles.catchButton}
-                onPress={() =>
+                onPress={() => {
+                    
+                    pokemonInfo.id = uuidv4();
                     dispatch(catchAction.Catch(pokemonInfo))
+                    
+                }
                 }
             >
                 <Headline style={styles.catchText}>Catch the Pokémon!</Headline>
@@ -67,21 +73,21 @@ const styles = StyleSheet.create({
         fontSize: 22,
         marginBottom: 15,
     },
-    pokemonPokeball:{
-        position:'absolute', 
-        opacity:0.1,
-        top:250,
-        left:170, 
-        width:200,
-        height:200
+    pokemonPokeball: {
+        position: 'absolute',
+        opacity: 0.1,
+        top: 250,
+        left: 170,
+        width: 200,
+        height: 200
     },
     pokedexStyle: {
-        width:700,
-        height:800,
-        position:'absolute',
-        top:-30,
-        left:-10,
-        opacity:0.5
+        width: 700,
+        height: 800,
+        position: 'absolute',
+        top: -30,
+        left: -10,
+        opacity: 0.5
     },
     indicator: {
         flex: 1,
@@ -94,10 +100,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         fontSize: 18,
         fontWeight: '600',
-        marginBottom:-1
+        marginBottom: -1
     },
     catchButton: {
-        marginTop:20,
+        marginTop: 20,
         backgroundColor: 'rgb(223, 24, 24)',
         display: 'flex',
         justifyContent: 'center',
@@ -107,7 +113,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#333',
         textAlign: 'center',
-        borderRadius: 5,        
+        borderRadius: 5,
     },
     catchText: {
         color: '#eee',

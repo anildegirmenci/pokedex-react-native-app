@@ -1,9 +1,10 @@
-import  React,{useState} from 'react';
+import React, { useState } from 'react';
 import { Text } from 'react-native-paper';
 import { View, StyleSheet, Image, Modal, Platform } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from "react-redux";
 import * as releaseAction from '../redux/actions/catch.action';
+import * as  favoriteAction from '../redux/actions/favorite.action';
 import { capitalizeFirstLetter } from './methods/Upper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -33,9 +34,9 @@ const Inventory = ({ route }) => {
                         <Image style={stylesInventory.pokedexStyle} source={require('../assets/pokebag.png')} />
                         <Text style={stylesInventory.headerText}>Pokébag</Text>
                     </View>
-                    {catchReducer.myPokemons.map(
-                        pokemon => {
-                            return <>
+                    {catchReducer.myPokemons.map((pokemon, index) => {
+                        return <>
+                            <View key={index}>
                                 <Image
                                     source={{
                                         uri: `https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/${pokemon.name}.png`,
@@ -43,19 +44,25 @@ const Inventory = ({ route }) => {
                                 />
                                 <View style={stylesInventory.catchedContainer}>
                                     <Text style={stylesInventory.catchedText}>Catched: {capitalizeFirstLetter(pokemon.name)}</Text>
-                                    <TouchableOpacity 
-                                        onPress={() => dispatch(releaseAction.Release(pokemon))} 
-                                        >
+                                    <TouchableOpacity activeOpacity={0.5}
+                                        onPress={() => {
+                                            dispatch(releaseAction.Release(pokemon))
+                                        }}
+                                    >
                                         <MaterialCommunityIcons style={stylesInventory.trash}
-                                        name='trash-can-outline'
-                                        size={35} />
-                                        </TouchableOpacity>
-                                    <TouchableOpacity activeOpacity={0.5} onPress={() => setModalOpen(true)}>
+                                            name='trash-can-outline'
+                                            size={35} />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity activeOpacity={0.5} onPress={() => {
+                                        dispatch(favoriteAction.Fav(pokemon));
+                                        console.log('Fav action' + favoriteAction.Fav(pokemon))
+                                        setModalOpen(true)}}>
                                         <Image style={stylesInventory.favorite} source={require('../assets/pokemon-fav.png')} />
                                     </TouchableOpacity>
                                 </View>
-                            </>
-                        }
+                            </View>
+                        </>
+                    }
                     )}
                 </View>
             </ScrollView>
@@ -84,8 +91,8 @@ const stylesInventory = StyleSheet.create({
         fontSize: 22,
         marginBottom: 15,
         ...Platform.select({
-            android:{
-                top:6
+            android: {
+                top: 6
             }
         })
     },
@@ -124,9 +131,9 @@ const stylesInventory = StyleSheet.create({
     },
     modalContent: {
         flex: 1,
-        alignSelf:'center',
-        justifyContent:'center',
-        padding:20,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        padding: 20,
     },
     modalToggle: {
         marginVertical: 20,
@@ -137,16 +144,16 @@ const stylesInventory = StyleSheet.create({
         alignSelf: 'center',
     },
     pikachu: {
-        width:100,
-        height:72,
+        width: 100,
+        height: 72,
     },
-    trash:{
-        paddingLeft:50,
-        flex:1,
-        color:'#fa0',
+    trash: {
+        paddingLeft: 50,
+        flex: 1,
+        color: '#fa0',
         ...Platform.select({
-            android:{
-                paddingTop:5
+            android: {
+                paddingTop: 5
             }
         })
     }

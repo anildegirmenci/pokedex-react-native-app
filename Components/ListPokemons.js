@@ -4,6 +4,8 @@ import { Headline, TextInput  } from 'react-native-paper';
 import {capitalizeFirstLetter} from './methods/Upper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 
 const ListPokemons = (props) => {
@@ -14,20 +16,27 @@ const ListPokemons = (props) => {
 
     const getPokemonData = async () => {
         const { state } = props.route;
-        console.log(state);
         fetch('https://pokeapi.co/api/v2/pokemon?limit=100')
             .then(response => response.json())
-            .then(pokemonData => setPokemonData(pokemonData.results));
+            .then(pokemonData => pokemonProcess(pokemonData.results));
     }
     useEffect(() => {
         getPokemonData();
     }, []);
 
+    const pokemonProcess = (pokemonList) => {
+        pokemonList.map(pokemon => {
+           pokemon.id = uuidv4();
+           return pokemon;
+        });
+        setPokemonData(pokemonList);
+       
+    }
+
     return pokemonData ? (
         <View>
             <Image style={styles.blackPokeball} source={require('../assets/pokeball-black.png')} />
             <Image style={styles.ekinoksIcon} source={require('../assets/ekinoks-icon.png')} />
-
             <View style={styles.searchCont}>
                 <TextInput
                     style={styles.searchfeild}
@@ -38,10 +47,7 @@ const ListPokemons = (props) => {
             </View>
             <ScrollView>
                 <View style={styles.container}>
-                    {pokemonData
-                        .filter(pokemon =>
-                            pokemon.name.toLowerCase().includes(searchfeild.toLowerCase())
-                        )
+                    {pokemonData.filter(pokemon => pokemon.name.toLowerCase().includes(searchfeild.toLowerCase()))
                         .map((pokemon, index) => {
                             return (
                                 <TouchableOpacity
@@ -50,7 +56,7 @@ const ListPokemons = (props) => {
                                     style={styles.card}
                                     onPress={() =>
                                         props.navigation.navigate('Pokedex', {
-                                            pokemon: pokemon.name,
+                                            pokemon: pokemon,
                                         })
                                     }>
                                     <LinearGradient style={styles.gradient} colors={['rgba(103,13,130,0.9)','rgba(19,0,70,0.8)']}>
