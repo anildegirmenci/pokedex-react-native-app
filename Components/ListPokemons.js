@@ -4,8 +4,7 @@ import { Headline, TextInput  } from 'react-native-paper';
 import {capitalizeFirstLetter} from './methods/Upper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
+
 
 
 const ListPokemons = (props) => {
@@ -18,20 +17,12 @@ const ListPokemons = (props) => {
         const { state } = props.route;
         fetch('https://pokeapi.co/api/v2/pokemon?limit=100')
             .then(response => response.json())
-            .then(pokemonData => pokemonProcess(pokemonData.results));
+            .then(pokemonData => setPokemonData(pokemonData.results));
     }
     useEffect(() => {
         getPokemonData();
     }, []);
 
-    const pokemonProcess = (pokemonList) => {
-        pokemonList.map(pokemon => {
-           pokemon.id = uuidv4();
-           return pokemon;
-        });
-        setPokemonData(pokemonList);
-       
-    }
 
     return pokemonData ? (
         <View>

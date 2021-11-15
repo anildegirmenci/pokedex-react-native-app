@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text,Headline } from 'react-native-paper';
+import { Text, Headline } from 'react-native-paper';
 import { View, StyleSheet, Image, Modal, Platform } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from "react-redux";
@@ -12,20 +12,22 @@ const Favorites = ({ route }) => {
     const dispatch = useDispatch();
     const [modalOpen, setModalOpen] = useState(false);
     const favoriteReducer = useSelector(({ favoriteReducer }) => favoriteReducer);
-    
+
 
     return (
         <View>
             <Image style={stylesFavorites.blackPokeball} source={require('../assets/pokeball-black.png')} />
             <Modal visible={modalOpen} animationType='fade'>
                 <View style={stylesFavorites.modalContent}>
-                    <Image style={stylesFavorites.pikachu} source={require('../assets/pikachu.gif')} />
-                    <Text>Fav Pokémon has been Deleted!</Text>
-                    <MaterialCommunityIcons style={stylesFavorites.modalToggle}
-                        name='close'
-                        size={40}
-                        onPress={() => setModalOpen(false)}
-                    />
+                    <View style={stylesFavorites.modalInner}>
+                        <Image style={stylesFavorites.pikachu} source={require('../assets/pikachu.gif')} />
+                        <Text>Fav Pokémon has been Deleted!</Text>
+                        <MaterialCommunityIcons style={stylesFavorites.modalToggle}
+                            name='close'
+                            size={40}
+                            onPress={() => setModalOpen(false)}
+                        />
+                    </View>
                 </View>
             </Modal>
             <ScrollView>
@@ -41,7 +43,8 @@ const Favorites = ({ route }) => {
                                     <Text style={stylesFavorites.catchedText}>{capitalizeFirstLetter(pokemon.name)}</Text>
                                     <TouchableOpacity activeOpacity={0.5} onPress={() => {
                                         dispatch(unfavoriteAction.Unfav(pokemon));
-                                        setModalOpen(true)}}>
+                                        setModalOpen(true)
+                                    }}>
                                         <Image style={stylesFavorites.favorite} source={require('../assets/pokemon-fav.png')} />
                                     </TouchableOpacity>
                                 </View>
@@ -65,7 +68,7 @@ const stylesFavorites = StyleSheet.create({
         paddingVertical: 20,
     },
     headerText: {
-        width:220,
+        width: 220,
         paddingLeft: 10,
         fontSize: 44,
     },
@@ -116,10 +119,18 @@ const stylesFavorites = StyleSheet.create({
         height: 42,
     },
     modalContent: {
+        backgroundColor: '#000000aa',
         flex: 1,
-        alignSelf: 'center',
+    },
+    modalInner: {
+        backgroundColor: '#eee',
+        margin: 50,
+        marginVertical:200,
+        padding: 10,
+        borderRadius: 10,
+        flex: 1,    
         justifyContent: 'center',
-        padding: 20,
+        alignItems:'center'
     },
     modalToggle: {
         marginVertical: 20,
@@ -132,6 +143,7 @@ const stylesFavorites = StyleSheet.create({
     pikachu: {
         width: 100,
         height: 72,
+        transform:[{rotateY:'180deg'}]
     },
     trash: {
         paddingLeft: 50,

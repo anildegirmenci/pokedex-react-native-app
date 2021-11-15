@@ -13,19 +13,21 @@ const Inventory = ({ route }) => {
     const dispatch = useDispatch();
     const [modalOpen, setModalOpen] = useState(false);
     const catchReducer = useSelector(({ catchReducer }) => catchReducer);
-    
+
     return (
         <View>
             <Image style={stylesInventory.blackPokeball} source={require('../assets/pokeball-black.png')} />
-            <Modal visible={modalOpen} animationType='fade'>
+            <Modal visible={modalOpen} transparent={true} animationType='fade'>
                 <View style={stylesInventory.modalContent}>
-                    <Image style={stylesInventory.pikachu} source={require('../assets/pikachu.gif')} />
-                    <Text style={stylesInventory.modalText}>Fav Pokémon has been added!</Text>
-                    <MaterialCommunityIcons style={stylesInventory.modalToggle}
-                        name='close'
-                        size={40}
-                        onPress={() => setModalOpen(false)}
-                    />
+                    <View style={stylesInventory.modalInner}>
+                        <Image style={stylesInventory.pikachu} source={require('../assets/pikachu.gif')} />
+                        <Text style={stylesInventory.modalText}>Fav Pokémon has been added!</Text>
+                        <MaterialCommunityIcons style={stylesInventory.modalToggle}
+                            name='close'
+                            size={40}
+                            onPress={() => setModalOpen(false)}
+                        />
+                    </View>
                 </View>
             </Modal>
             <ScrollView>
@@ -51,7 +53,7 @@ const Inventory = ({ route }) => {
                                     <TouchableOpacity activeOpacity={0.5} onPress={() => {
                                         setModalOpen(true);
                                         dispatch(favAction.Fav(pokemon));
-                                        }}>
+                                    }}>
                                         <Image style={stylesInventory.favorite} source={require('../assets/pokemon-fav.png')} />
                                     </TouchableOpacity>
                                 </View>
@@ -125,17 +127,22 @@ const stylesInventory = StyleSheet.create({
         height: 42,
     },
     modalContent: {
-        backgroundColor:'#e0e0e0',
+        backgroundColor: '#000000aa',
         flex: 1,
-        width:'100%',
-        height:'100%',
-        alignSelf: 'center',
-        justifyContent: 'center',
-        padding: 20,
     },
-    modalText:{
-        fontSize:19,
-        color:'#333',
+    modalInner: {
+        backgroundColor: '#eee',
+        margin: 50,
+        marginVertical:200,
+        padding: 10,
+        borderRadius: 10,
+        flex: 1,    
+        justifyContent: 'center',
+        alignItems:'center'
+    },
+    modalText: {
+        fontSize: 19,
+        color: '#333',
     },
     modalToggle: {
         marginVertical: 20,

@@ -1,22 +1,27 @@
 import {
     CATCH_POKEMON, RELEASE_POKEMON
 } from "../constant";
-export const CatchPokemon = (pokeball) => ({
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
+
+export const CatchPokemon = (pokemon) => ({
     type: CATCH_POKEMON,
-    pokemon: pokeball,
+    pokemon: pokemon,
 });
-export const ReleasePokemon = (pokeball) => ({
+export const ReleasePokemon = (pokemon) => ({
     type: RELEASE_POKEMON,
-    pokemon: pokeball,
+    pokemon: pokemon,
 });
 
-export const Catch = (pokeball) => {
+export const Catch = (pokemon) => {
     return async (dispatch) => {
-            dispatch(CatchPokemon(pokeball))
+        dispatch(CatchPokemon(pokemon));
+        pokemon.id = uuidv4();
+        return pokemon;
     }
 }
-export const Release = (pokeball) => {
+export const Release = (pokemon) => {
     return async (dispatch) => {
-            dispatch(ReleasePokemon(pokeball))
+        dispatch(ReleasePokemon(pokemon))
     }
 }
