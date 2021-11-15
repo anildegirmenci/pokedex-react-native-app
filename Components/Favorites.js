@@ -36,7 +36,7 @@ const Favorites = ({ route }) => {
                         <Image style={stylesFavorites.pokeStar} source={require('../assets/pokemon-fav.png')} />
                         <Text style={stylesFavorites.headerText}>Favorite Pokémons</Text>
                     </View>
-                    {favoriteReducer.myPokemons.map((pokemon, index) => {
+                    {favoriteReducer.favPokemons.map((pokemon, index) => {
                         return <>
                             <View key={index}>
                                 <View style={stylesFavorites.catchedContainer}>

@@ -7,14 +7,15 @@ export default (state = initialState, action) => {
         case CATCH_POKEMON:
             return {
                 ...state,
-                myPokemons: [...state.myPokemons, action.pokemon]
+                myPokemons: state.myPokemons.concat(action.pokemon)
             }
-        case RELEASE_POKEMON:
-            return {
-                ...state,
-                myPokemons: [...state.myPokemons.filter(p => p.name !== action.pokemon.name)]
-            };
+            case RELEASE_POKEMON:
+                return {
+                    ...state,
+                    myPokemons: state.myPokemons.filter(p => p.id !== action.pokemon.id)
+                };
 
-        default: return state
+            default:
+                return state
     }
 };
