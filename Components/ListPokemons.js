@@ -27,7 +27,6 @@ const ListPokemons = (props) => {
     return pokemonData ? (
         <View>
             <Image style={styles.blackPokeball} source={require('../assets/pokeball-black.png')} />
-            <Image style={styles.ekinoksIcon} source={require('../assets/ekinoks-icon.png')} />
             <View style={styles.searchCont}>
                 <TextInput
                     style={styles.searchfeild}
